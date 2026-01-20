@@ -66,8 +66,11 @@ public class AppRunner implements CommandLineRunner {
         do {
             String username = readString("Username:");
             String pwd = readString("Senha:");
-            if (userService.auth(username, pwd)) {
-                menuCadastro();
+            if (userService.auth(username, pwd) && userService.checkRole(username, User.RoleUsuario.ADMIN)) {
+                menuAdmin();
+                loginValidado = true;
+            } else if (userService.auth(username,pwd)) {
+
                 loginValidado = true;
             } else {
                 tentativas++;
@@ -94,7 +97,7 @@ public class AppRunner implements CommandLineRunner {
         System.out.println("""
         ===== SISTEMA HOTEL =====
         1 - Cadastrar cliente
-        2 - Cadastrar reserva
+        2 - Checar reserva
         3 - Checar quartos
         0 - Sair
         =========================
@@ -152,7 +155,7 @@ public class AppRunner implements CommandLineRunner {
         """);
     }
 
-    private void menuCadastro() {
+    private void menuAdmin() {
         int opcao; // variavel de opcao
         do { // estrutura de loop (mostre o menu enquanto a opção for =/= 0)
             showMenu(); // mostra o menu

@@ -30,6 +30,12 @@ public class UserService {
                 .isPresent();
     }
 
+    public boolean checkRole(String username, User.RoleUsuario roleUsuario) {
+        return userRepository
+                .findByUsernameAndRole(username, roleUsuario)
+                .contains("ADMIN");
+    }
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
