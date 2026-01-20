@@ -1,6 +1,7 @@
 package br.com.systemhotel.main;
 
 
+import br.com.systemhotel.dto.CustomerDTO;
 import br.com.systemhotel.service.CustomerService;
 import br.com.systemhotel.service.NameValidator;
 import org.springframework.boot.CommandLineRunner;
@@ -10,8 +11,8 @@ import java.util.Scanner;
 
 @Component
 public class AppRunner implements CommandLineRunner {
-
-    private final CustomerService customerService; // Classe customerService
+    Long id;
+    private CustomerService customerService; // Classe customerService
     private final Scanner scanner = new Scanner(System.in); // Criamos o Scanner
 
     public AppRunner(CustomerService customerService) { // Construtor
@@ -52,8 +53,9 @@ public class AppRunner implements CommandLineRunner {
         String email = readString("Email:");
         String endereco = readString("Endereço:");
         String cpf = readString("CPF:");
+        CustomerDTO dto = new CustomerDTO(id, nome, idade, cpf, endereco, email, telefone);
 
-        customerService.createCustomer(nome, idade, telefone, email, endereco, cpf); // chama nosso service para criar um novo cliente no banco de dados
+        customerService.createCustomer(dto); // chama nosso service para criar um novo cliente no banco de dados
 
         System.out.println("Cliente cadastrado com sucesso!!!"); // retorna o sucesso do registro
     }

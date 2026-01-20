@@ -1,5 +1,6 @@
 package br.com.systemhotel.entity;
 
+import br.com.systemhotel.dto.CustomerDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,18 +18,13 @@ public class Customer {
     private String email;
     private String endereco;
 
-    public Customer(String nome,
-                    Integer idade,
-                    String cpf,
-                    String telefone,
-                    String email,
-                    String endereco) {
-        this.nome = nome;
-        this.idade = idade;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.email = email;
-        this.endereco = endereco;
+    public Customer(CustomerDTO dados) {
+        this.nome = dados.nome();
+        this.idade = dados.idade();
+        this.cpf = dados.cpf();
+        this.telefone = dados.telefone();
+        this.email = dados.email();
+        this.endereco = dados.endereco();
     }
 
 

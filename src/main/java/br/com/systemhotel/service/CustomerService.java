@@ -1,5 +1,6 @@
 package br.com.systemhotel.service;
 
+import br.com.systemhotel.dto.CustomerDTO;
 import br.com.systemhotel.entity.Customer;
 import br.com.systemhotel.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService {
     @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    public Customer createCustomer(String nome, Integer idade, String telefone, String email, String endereco, String cpf) {
+    public void createCustomer(CustomerDTO dto) {
 
-        Customer customer = new Customer(nome, idade, cpf, telefone, email, endereco);
-
-        return customerRepository.save(customer);
+        customerRepository.save(new Customer(dto));
     }
 }
