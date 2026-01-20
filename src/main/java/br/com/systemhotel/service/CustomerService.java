@@ -16,7 +16,6 @@ public class CustomerService {
     }
 
     public void createCustomer(CustomerDTO dto) {
-
         customerRepository.save(new Customer(dto));
     }
 }

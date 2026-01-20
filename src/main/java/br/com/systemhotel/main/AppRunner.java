@@ -2,9 +2,13 @@ package br.com.systemhotel.main;
 
 
 import br.com.systemhotel.dto.CustomerDTO;
+import br.com.systemhotel.dto.UserDTO;
+import br.com.systemhotel.entity.User;
 import br.com.systemhotel.service.CustomerService;
 import br.com.systemhotel.service.NameValidator;
+import br.com.systemhotel.service.UserService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -12,29 +16,80 @@ import java.util.Scanner;
 @Component
 public class AppRunner implements CommandLineRunner {
     Long id;
-    private CustomerService customerService; // Classe customerService
+    private final CustomerService customerService; // Classe customerService
     private final Scanner scanner = new Scanner(System.in); // Criamos o Scanner
+    private final UserService userService;
 
-    public AppRunner(CustomerService customerService) { // Construtor
+
+    public AppRunner(CustomerService customerService, UserService userService) { // Construtor
         this.customerService = customerService;
+        this.userService = userService;
     }
 
     @Override
     public void run(String... args) { // irá executar o nosso menu
-        int opcao; // variavel de opcao
-        do { // estrutura de loop (mostre o menu enquanto a opção for =/= 0)
-            showMenu(); // mostra o menu
-            opcao = readInt("Escolha uma opção:"); // utiliza o metodo readInt para escrever a frase e ler a opcao do usuario
 
+        menuLogin();
+
+
+
+
+
+
+
+    }
+
+
+    private void menuLogin() {
+        int opcao;
+        do { // estrutura de loop (mostre o menu enquanto a opção for =/= 0)
+            showLogin(); // mostra o menu
+            opcao = readInt("Escolha uma opção:"); // utiliza o metodo readInt para escrever a frase e ler a opcao do usuario
             switch (opcao) { // inicia um switch case das opcoes do menu
                 case 1:
-                    cadastrarCliente(); // chama o cadastro de cliente
+                    Login();
+                    break;
+                case 2:
+                    cadastrarUsuario();
                     break;
             }
 
-        } while (opcao != 0); // enquanto a opcao for =/= 0 o programa nao encerra
+        } while (opcao != 0);
             System.exit(0); // finaliza a aplicação
-        }
+
+    }
+
+    private void Login() {
+        int tentativas = 0;
+        boolean loginValidado = false;
+        System.out.println("==== LOGIN ====");
+        do {
+            String username = readString("Username:");
+            String pwd = readString("Senha:");
+            if (userService.auth(username, pwd)) {
+                menuCadastro();
+                loginValidado = true;
+            } else {
+                tentativas++;
+                System.out.println("Usuário ou senha inválidos.");
+            } if (tentativas >= 3) {
+                System.out.println("Limite máximo de tentativas excedido. O programa irá se encerrar!");
+                System.exit(0);
+            }
+        } while (!loginValidado);
+    }
+
+    private void cadastrarUsuario() {
+        System.out.println("==== Cadastro de Usuário =====");
+        String username = readString("Username:");
+        String password = readString("Senha:");
+        String email = readString("Email:");
+        User.RoleUsuario roleUsuario = User.RoleUsuario.USER;
+        UserDTO dto = new UserDTO(id, username, password, email, roleUsuario);
+        userService.register(dto);
+        System.out.println("Cadastro de Usuário realizado com sucesso!");
+    }
+
     private void showMenu() { // metodo que irá mostrar o menu principal
         System.out.println("""
         ===== SISTEMA HOTEL =====
@@ -87,7 +142,31 @@ public class AppRunner implements CommandLineRunner {
             System.out.println("Nome inválido! Use apenas letras e espaços."); // avisa que tem algo errado
         }
     }
+    private void showLogin() {
+        System.out.println("""
+        ===== LOGIN SISTEMA HOTEL =====
+        1 - Login
+        2 - Cadastrar usuario
+        0 - Sair
+        ===============================
+        """);
+    }
 
+    private void menuCadastro() {
+        int opcao; // variavel de opcao
+        do { // estrutura de loop (mostre o menu enquanto a opção for =/= 0)
+            showMenu(); // mostra o menu
+            opcao = readInt("Escolha uma opção:"); // utiliza o metodo readInt para escrever a frase e ler a opcao do usuario
+
+            switch (opcao) { // inicia um switch case das opcoes do menu
+                case 1:
+                    cadastrarCliente(); // chama o cadastro de cliente
+                    break;
+            }
+
+        } while (opcao != 0); // enquanto a opcao for =/= 0 o programa nao encerra
+        System.exit(0); // finaliza a aplicação
+    }
 
 }
 
