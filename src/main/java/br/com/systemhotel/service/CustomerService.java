@@ -1,21 +1,34 @@
 package br.com.systemhotel.service;
 
+import br.com.systemhotel.dto.CreateCustomerDTO;
 import br.com.systemhotel.dto.CustomerDTO;
+import br.com.systemhotel.dto.CustomerResponseDTO;
 import br.com.systemhotel.entity.Customer;
+import br.com.systemhotel.exception.ConflictException;
 import br.com.systemhotel.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
-    @Autowired
+
     private final CustomerRepository customerRepository;
 
+    @Autowired
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    public void createCustomer(CustomerDTO dto) {
-        customerRepository.save(new Customer(dto));
+    public CustomerResponseDTO createCustomer(CreateCustomerDTO dto) {
+
+        if (customerRepository.existsByCpf(dto.cpf())) {
+            throw new IllegalStateException("Este CPF já esta cadastrado!");
+        }
+        Customer customer = new Customer(dto);
+        customerRepository.save(customer);
+        return new CustomerResponseDTO(customer);
+
     }
+
+
 }

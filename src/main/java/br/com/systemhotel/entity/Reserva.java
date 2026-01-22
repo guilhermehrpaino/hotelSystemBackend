@@ -1,4 +1,4 @@
 package br.com.systemhotel.entity;
 
-public class BookingStatus {
+public class Reserva {
 }

@@ -1,5 +1,6 @@
 package br.com.systemhotel.entity;
 
+import br.com.systemhotel.dto.CreateCustomerDTO;
 import br.com.systemhotel.dto.CustomerDTO;
 import jakarta.persistence.*;
 
@@ -11,14 +12,15 @@ public class Customer {
     private Long id;
 
     @Column(unique = true)
+    private String cpf;
+
     private String nome;
     private Integer idade;
-    private String cpf;
     private String telefone;
     private String email;
     private String endereco;
 
-    public Customer(CustomerDTO dados) {
+    public Customer(CreateCustomerDTO dados) {
         this.nome = dados.nome();
         this.idade = dados.idade();
         this.cpf = dados.cpf();
@@ -27,7 +29,7 @@ public class Customer {
         this.endereco = dados.endereco();
     }
 
-
+    public Customer() {}
 
     public Long getId() {
         return id;
