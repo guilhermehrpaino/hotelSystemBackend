@@ -1,7 +1,6 @@
 package br.com.systemhotel.entity;
 
 import br.com.systemhotel.dto.CreateCustomerDTO;
-import br.com.systemhotel.dto.CustomerDTO;
 import jakarta.persistence.*;
 
 @Entity
