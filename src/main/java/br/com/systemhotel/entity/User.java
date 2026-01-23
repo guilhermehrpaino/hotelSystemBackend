@@ -27,7 +27,6 @@ public class User {
     private RoleUsuario role = RoleUsuario.USER;
 
     public User(UserDTO dados) {
-        this.id = dados.id();
         this.username = dados.username();
         this.password = dados.password();
         this.email = dados.email();
