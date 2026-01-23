@@ -17,6 +17,7 @@ public record CreateCustomerDTO(
         @Pattern(regexp = "\\d{11}", message = "O CPF deve conter no mínimo 11 dígitos")
         String cpf,
 
+
         String telefone,
         Integer idade,
         String endereco
