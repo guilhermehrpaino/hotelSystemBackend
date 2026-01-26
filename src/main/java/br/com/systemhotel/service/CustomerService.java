@@ -4,8 +4,12 @@ import br.com.systemhotel.dto.CreateCustomerDTO;
 import br.com.systemhotel.dto.CustomerResponseDTO;
 import br.com.systemhotel.entity.Customer;
 import br.com.systemhotel.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -32,4 +36,20 @@ public class CustomerService {
     }
 
 
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
+    }
+
+    public Optional<Customer> findById(Long id) {
+        return customerRepository.findById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return customerRepository.existsById(id);
+    }
+
+    public Customer updateCustomer(Customer customer) {
+        customerRepository.save(customer);
+        return new Customer();
+    }
 }
