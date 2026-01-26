@@ -3,17 +3,18 @@ package br.com.systemhotel.controller;
 
 import br.com.systemhotel.dto.CreateEmployeeDTO;
 import br.com.systemhotel.dto.EmployeeResponseDTO;
+import br.com.systemhotel.entity.Employee;
 import br.com.systemhotel.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/funcionarios")
 public class AdminEmployeeController {
 
     private final EmployeeService employeeService;
@@ -23,8 +24,35 @@ public class AdminEmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/funcionarios")
+    @PostMapping
     public EmployeeResponseDTO create (@Valid @RequestBody CreateEmployeeDTO dto) {
         return employeeService.createEmployee(dto);
     }
+
+    @GetMapping
+    public List<Employee> listAllEmployees() {
+        return employeeService.findAll();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEmployee(@PathVariable Long id, @Valid @RequestBody Employee employee) {
+
+        try {
+            if (!employeeService.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            employee.setId(id);
+            Employee updatedEmployee = employeeService.updateEmployee(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/cargo/{cargo}")
+    public ResponseEntity<List<Employee>> listEmployeeByRole(@PathVariable String cargo) {
+        return employeeService.findByCargo(cargo);
+    }
+
+
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/clientes")
 public class AdminCustomerController {
 
 
@@ -28,18 +28,18 @@ public class AdminCustomerController {
         this.service = service;
     }
 
-    @PostMapping("/clientes")
+    @PostMapping
     public CustomerResponseDTO create (@Valid @RequestBody CreateCustomerDTO dto) {
         return service.createCustomer(dto);
     }
 
 
-    @GetMapping("/clientes")
+    @GetMapping
     public List<Customer> showCustomers() {
         return service.findAll();
     }
 
-    @GetMapping("/clientes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Customer> showCustomerById(@PathVariable Long id) {
         Optional<Customer> customer = service.findById(id);
         return customer
@@ -47,8 +47,8 @@ public class AdminCustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/clientes/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer) {
         try {
             if (!service.existsById(id)) {
                 return ResponseEntity.notFound().build();

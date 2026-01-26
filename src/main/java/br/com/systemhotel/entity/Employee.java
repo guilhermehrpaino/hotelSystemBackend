@@ -3,8 +3,11 @@ package br.com.systemhotel.entity;
 
 import br.com.systemhotel.dto.CreateEmployeeDTO;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee")
@@ -32,11 +35,19 @@ public class Employee {
     @Column(nullable = false)
     private String cargo;
 
-    @Column(nullable = false)
-    private String salario;
+   // @Column(nullable = false)
+    private BigDecimal salario;
 
     @Column(nullable = false)
     private String endereco;
+
+    @Column(name = "created_at")
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public Employee(CreateEmployeeDTO dados) {
         this.nome = dados.nome();
@@ -53,6 +64,22 @@ public class Employee {
 
     // Getters e Setters
 
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public String getEndereco() {
         return endereco;
@@ -120,11 +147,11 @@ public class Employee {
 
 
 
-    public String getSalario() {
+    public BigDecimal getSalario() {
         return salario;
     }
 
-    public void setSalario(String salario) {
+    public void setSalario(BigDecimal salario) {
         this.salario = salario;
     }
 

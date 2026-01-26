@@ -3,6 +3,8 @@ package br.com.systemhotel.entity;
 import br.com.systemhotel.dto.CreateCustomerDTO;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -19,6 +21,12 @@ public class Customer {
     private String email;
     private String endereco;
 
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
+
     public Customer(CreateCustomerDTO dados) {
         this.nome = dados.nome();
         this.idade = dados.idade();
@@ -29,6 +37,22 @@ public class Customer {
     }
 
     public Customer() {}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public Long getId() {
         return id;

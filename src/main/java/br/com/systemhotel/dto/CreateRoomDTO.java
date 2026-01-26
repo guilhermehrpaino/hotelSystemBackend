@@ -2,6 +2,8 @@ package br.com.systemhotel.dto;
 
 import br.com.systemhotel.entity.Room;
 
+import java.time.LocalDateTime;
+
 
 public record CreateRoomDTO(
 
@@ -9,5 +11,7 @@ public record CreateRoomDTO(
 
         Integer diaria,
 
-        Room.StatusQuarto status
+        Room.StatusQuarto status,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {}

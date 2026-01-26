@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class CustomerService {
             throw new IllegalStateException("Este email já está cadastrado!");
         }
         Customer customer = new Customer(dto);
+        customer.setCreatedAt(LocalDateTime.now());
         customerRepository.save(customer);
         return new CustomerResponseDTO(customer);
 
@@ -49,6 +51,7 @@ public class CustomerService {
     }
 
     public Customer updateCustomer(Customer customer) {
+        customer.setUpdatedAt(LocalDateTime.now());
         customerRepository.save(customer);
         return new Customer();
     }

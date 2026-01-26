@@ -3,6 +3,8 @@ package br.com.systemhotel.entity;
 import br.com.systemhotel.dto.CreateRoomDTO;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table (name = "rooms")
 public class Room {
@@ -21,6 +23,12 @@ public class Room {
     @Column(nullable = false)
     private StatusQuarto status;
 
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
+
     public Room(CreateRoomDTO dados) {
         this.numero = dados.numero();
         this.diaria = dados.diaria();
@@ -29,6 +37,22 @@ public class Room {
 
 
     public Room() {}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public Long getId() {
         return id;

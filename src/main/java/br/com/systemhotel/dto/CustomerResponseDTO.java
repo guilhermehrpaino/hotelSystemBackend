@@ -2,6 +2,8 @@ package br.com.systemhotel.dto;
 
 import br.com.systemhotel.entity.Customer;
 
+import java.time.LocalDateTime;
+
 public record CustomerResponseDTO(
         Long id,
         String nome,
@@ -9,7 +11,9 @@ public record CustomerResponseDTO(
         String cpf,
         String telefone,
         String email,
-        String endereco
+        String endereco,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public CustomerResponseDTO (Customer customer){
         this(
@@ -19,7 +23,9 @@ public record CustomerResponseDTO(
                 customer.getCpf(),
                 customer.getTelefone(),
                 customer.getEmail(),
-                customer.getEndereco()
+                customer.getEndereco(),
+                customer.getCreatedAt(),
+                customer.getUpdatedAt()
         );
     }
 }

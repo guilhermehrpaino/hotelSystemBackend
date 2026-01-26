@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/quartos")
 public class AdminRoomController {
@@ -25,14 +28,51 @@ public class AdminRoomController {
         return roomService.createRoom(dto);
     }
 
-    @GetMapping("/numero/{numero}")
-    public ResponseEntity<Room> buscarPorNumero(@PathVariable Integer numero) {
-        return roomService.findByNumero(numero)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping
+    public List<Room> showAllRooms() {
+        return roomService.findAll();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRoom(@PathVariable Long id, @Valid @RequestBody Room room) {
+        try {
+            if (!roomService.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            room.setId(id);
+            room.setStatus(Room.StatusQuarto.DISPONIVEL);
+            Room updatedRoom = roomService.updateRoom(room);
+            return ResponseEntity.ok(updatedRoom);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
     }
 
+    @GetMapping("/{id}")
+    public Optional<?> findRoomDataById(@PathVariable Long id) {
+        return roomService.findById(id);
+    }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody Room room) {
+        try {
+            if (!roomService.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            room.setId(id);
+            Room updatedStatus = roomService.updateRoom(room);
+            return ResponseEntity.ok(updatedStatus);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
+
+
+
+
+
+

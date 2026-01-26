@@ -11,4 +11,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     boolean existsByNumero(Integer numero);
 
     Optional<Room> findByNumero(Integer numero);
+
+    boolean existsById(Long id);
 }
