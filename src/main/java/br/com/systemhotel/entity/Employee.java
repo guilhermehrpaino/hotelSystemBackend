@@ -1,42 +1,69 @@
 package br.com.systemhotel.entity;
 
-import br.com.systemhotel.dto.CreateCustomerDTO;
-import jakarta.persistence.*;
 
+import br.com.systemhotel.dto.CreateEmployeeDTO;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "employee")
+public class Employee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
+    private Integer idade;
+
+    @Column(unique = true, nullable = false)
     private String cpf;
 
-    private String nome;
-    private Integer idade;
-    private String telefone;
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String telefone;
+
+    @Column(nullable = false)
+    private String cargo;
+
+   // @Column(nullable = false)
+    private BigDecimal salario;
+
+    @Column(nullable = false)
     private String endereco;
 
     @Column(name = "created_at")
-    LocalDateTime createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-    public Customer(CreateCustomerDTO dados) {
+    public Employee(CreateEmployeeDTO dados) {
         this.nome = dados.nome();
         this.idade = dados.idade();
         this.cpf = dados.cpf();
-        this.telefone = dados.telefone();
         this.email = dados.email();
+        this.telefone = dados.telefone();
+        this.cargo = dados.cargo();
+        this.salario = dados.salario();
         this.endereco = dados.endereco();
     }
 
-    public Customer() {}
+    public Employee() {}
+
+    // Getters e Setters
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -52,6 +79,22 @@ public class Customer {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     public Long getId() {
@@ -86,14 +129,6 @@ public class Customer {
         this.cpf = cpf;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -102,11 +137,25 @@ public class Customer {
         this.email = email;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
+
+
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
+    }
+
+
 }
+
+
