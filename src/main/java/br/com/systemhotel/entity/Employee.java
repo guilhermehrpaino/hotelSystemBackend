@@ -35,7 +35,7 @@ public class Employee {
     @Column(nullable = false)
     private String cargo;
 
-   // @Column(nullable = false)
+    @Column(nullable = false)
     private BigDecimal salario;
 
     @Column(nullable = false)
