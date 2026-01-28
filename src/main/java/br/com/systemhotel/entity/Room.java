@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table (name = "rooms")
 public class Room {
@@ -24,10 +25,11 @@ public class Room {
     private StatusQuarto status;
 
     @Column(name = "created_at")
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
+
 
     public Room(CreateRoomDTO dados) {
         this.numero = dados.numero();
@@ -37,6 +39,7 @@ public class Room {
 
 
     public Room() {}
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

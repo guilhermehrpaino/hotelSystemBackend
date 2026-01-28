@@ -18,6 +18,12 @@ public record CreateReservaDTO(
 
         BigDecimal valorTotal,
 
-        String observacoes
+        String observacoes,
+
+        String clienteNome,
+
+        Integer quartoNumero,
+
+        String status
 
 ) {}

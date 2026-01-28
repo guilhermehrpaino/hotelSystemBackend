@@ -3,7 +3,9 @@ package br.com.systemhotel.controller;
 import br.com.systemhotel.dto.CreateReservaDTO;
 import br.com.systemhotel.dto.ReservaResponseDTO;
 import br.com.systemhotel.entity.Reserva;
+import br.com.systemhotel.entity.Room;
 import br.com.systemhotel.service.ReservaService;
+import br.com.systemhotel.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,20 +13,60 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/reservas")
 public class UserReservaController {
 
     private final ReservaService reservaService;
+    private final RoomService roomService;
 
     @Autowired
-    public UserReservaController(ReservaService reservaService) {
+    public UserReservaController(ReservaService reservaService, RoomService roomService) {
         this.reservaService = reservaService;
+        this.roomService = roomService;
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Reserva> atualizarReserva(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        Reserva reserva = reservaService.findById(id);
+        reserva.setStatus(status);
+        reservaService.save(reserva);
+        return ResponseEntity.ok(reserva);
+    }
+
+
+    @GetMapping
+    public List<Reserva> findAllReservas() {
+        return reservaService.findAll();
+    }
+
+    @PostMapping("/processar-status-quartos")
+    public ResponseEntity<List<Room>> processarStatusQuartos(@RequestBody Map<String, List<Long>> request) {
+        List<Long> quartosIds = request.get("quartosIds");
+        List<Room> quartosAtualizado = new ArrayList<>();
+
+        for (Long quartoId : quartosIds) {
+            Room room = roomService.findById(quartoId);
+
+            List<Reserva> reservaHoje = reservaService.findByQuartoIdAndCheckIn(quartoId, LocalDate.now());
+
+            if (!reservaHoje.isEmpty()) {
+                if (room.getStatus().equals(Room.StatusQuarto.DISPONIVEL)) {
+                    room.setStatus(Room.StatusQuarto.RESERVADO);
+                }
+            } else {
+                room.setStatus(Room.StatusQuarto.DISPONIVEL);
+            }
+
+            roomService.updateRoom(room);
+            quartosAtualizado.add(room);
+        }
+        return ResponseEntity.ok(quartosAtualizado);
+    }
 
     @PostMapping
     public ReservaResponseDTO createReserva(@Valid @RequestBody CreateReservaDTO dto) {
@@ -32,10 +74,10 @@ public class UserReservaController {
     }
 
     @GetMapping("/disponibilidade")
-    public ResponseEntity<Map<String,Boolean>> checarDisponibilidade(
-            @RequestParam Long quartoId,
+    public ResponseEntity<Map<String,Boolean>> checarDisponibilidade(@RequestParam Long quartoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut) {
+
         Map<String, Boolean> response = new HashMap<>();
 
         boolean disponivel = reservaService.quartoDisponivel(quartoId, checkIn, checkOut);
@@ -44,8 +86,6 @@ public class UserReservaController {
         } else {
             response.put("disponivel", disponivel);
         }
-
-
         return ResponseEntity.ok(response);
     }
 

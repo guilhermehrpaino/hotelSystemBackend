@@ -2,12 +2,15 @@ package br.com.systemhotel.service;
 
 import br.com.systemhotel.dto.CreateRoomDTO;
 import br.com.systemhotel.dto.RoomResponseDTO;
+import br.com.systemhotel.entity.Reserva;
 import br.com.systemhotel.entity.Room;
+import br.com.systemhotel.repository.ReservaRepository;
 import br.com.systemhotel.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +19,12 @@ import java.util.Optional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final ReservaRepository reservaRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, ReservaRepository reservaRepository) {
         this.roomRepository = roomRepository;
+        this.reservaRepository = reservaRepository;
     }
 
     public RoomResponseDTO createRoom(CreateRoomDTO dto) {
@@ -51,7 +56,9 @@ public class RoomService {
         return new Room();
     }
 
-    public Optional<?> findById(Long id) {
-        return roomRepository.findById(id);
+    public Room findById(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Quarto não encontrado"));
     }
+
 }

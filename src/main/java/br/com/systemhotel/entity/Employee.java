@@ -3,6 +3,7 @@ package br.com.systemhotel.entity;
 
 import br.com.systemhotel.dto.CreateEmployeeDTO;
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
