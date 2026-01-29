@@ -17,7 +17,13 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @Query("""
     SELECT r FROM Reserva r
     WHERE r.quartoId = :quartoId
-      AND :hoje BETWEEN r.checkIn AND r.checkOut
-""")
-    List<Reserva> buscarReservaAtivaHoje(Long quartoId, LocalDate hoje);
+    AND :hoje BETWEEN r.checkIn AND r.checkOut
+    AND r.status = 'RESERVADA'
+    """)
+    List<Reserva> buscarReservaAtivaHoje(Long quartoId, LocalDate hoje, String status);
+
+
+    Reserva findByClienteId(Long clienteID);
+
+    Reserva findByQuartoId(Long id);
 }

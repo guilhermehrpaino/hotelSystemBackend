@@ -40,8 +40,13 @@ public class ReservaService {
 
     public boolean clienteComReserva(Long clienteID) {
         boolean clienteComReservaAtiva;
-        if (reservaRepository.existsByClienteId(clienteID)) {
+        Reserva reserva = reservaRepository.findByClienteId(clienteID);
+        if (reserva == null) {
+            return clienteComReservaAtiva = false;
+        }
+        if (reserva.getStatus().equals("ATIVA") || reserva.getStatus().equals("RESERVADA")) {
             return clienteComReservaAtiva = true;
+
         } else {
             return clienteComReservaAtiva = false;
         }
@@ -62,12 +67,16 @@ public class ReservaService {
     }
 
 
-    public List<Reserva> findByQuartoIdAndCheckIn(Long quartoId, LocalDate data) {
-        return reservaRepository.buscarReservaAtivaHoje(quartoId, data);
+    public List<Reserva> findByQuartoIdAndCheckInAndStatus(Long quartoId, LocalDate data, String status) {
+        return reservaRepository.buscarReservaAtivaHoje(quartoId, data, status);
     }
 
     public Reserva findById(Long id) {
         return reservaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quarto não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada!"));
+    }
+
+    public Reserva findByQuartoId(Long id) {
+        return reservaRepository.findByQuartoId(id);
     }
 }

@@ -49,18 +49,18 @@ public class UserReservaController {
         List<Long> quartosIds = request.get("quartosIds");
         List<Room> quartosAtualizado = new ArrayList<>();
 
+
+
         for (Long quartoId : quartosIds) {
             Room room = roomService.findById(quartoId);
 
-            List<Reserva> reservaHoje = reservaService.findByQuartoIdAndCheckIn(quartoId, LocalDate.now());
+            List<Reserva> reservaHoje = reservaService.findByQuartoIdAndCheckInAndStatus(quartoId, LocalDate.now(), "RESERVADA");
 
-            if (!reservaHoje.isEmpty()) {
-                if (room.getStatus().equals(Room.StatusQuarto.DISPONIVEL)) {
-                    room.setStatus(Room.StatusQuarto.RESERVADO);
+                if (!reservaHoje.isEmpty()) {
+                    if (room.getStatus().equals(Room.StatusQuarto.DISPONIVEL)) {
+                        room.setStatus(Room.StatusQuarto.RESERVADO);
+                    }
                 }
-            } else {
-                room.setStatus(Room.StatusQuarto.DISPONIVEL);
-            }
 
             roomService.updateRoom(room);
             quartosAtualizado.add(room);

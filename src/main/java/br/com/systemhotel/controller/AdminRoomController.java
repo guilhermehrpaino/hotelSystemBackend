@@ -75,12 +75,29 @@ public class AdminRoomController {
         return roomService.findById(id);
     }
 
+
+    @PutMapping("/{id}/checkout")
+    public ResponseEntity<Room> atualizarStatusOcupado(
+            @PathVariable Long id,
+            @RequestBody Map<String, Room.StatusQuarto> requestBody
+    ) {
+        Room.StatusQuarto novoStatus = requestBody.get("status");
+        Room room = roomService.findById(id);
+        room.setId(id);
+        room.setStatus(novoStatus);
+        room = roomService.updateRoom(room);
+        return ResponseEntity.ok(room);
+    }
+
+
+
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody Room room) {
         try {
             if (!roomService.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
+            room = roomService.findById(id);
             room.setId(id);
             Room updatedStatus = roomService.updateRoom(room);
             return ResponseEntity.ok(updatedStatus);
