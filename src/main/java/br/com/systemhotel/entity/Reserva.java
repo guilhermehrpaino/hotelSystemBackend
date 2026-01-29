@@ -30,10 +30,18 @@ public class Reserva {
     @Column(name = "quantia_hospedes")
     private Integer numeroHospedes;
 
+    @Column(name = "cliente_nome")
+    private String clienteNome;
+
+    @Column(name = "quarto_numero")
+    private Integer quartoNumero;
+
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;
 
     private String observacoes;
+
+    private String status;
 
     public Reserva() {}
 
@@ -45,10 +53,37 @@ public class Reserva {
         this.numeroHospedes = dados.numeroHospedes();
         this.valorTotal = dados.valorTotal();
         this.observacoes = dados.observacoes();
+        this.clienteNome = dados.clienteNome();
+        this.quartoNumero = dados.quartoNumero();
+        this.status = "RESERVADA";
     }
 
     // Getters e Setters
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getClienteNome() {
+        return clienteNome;
+    }
+
+    public void setClienteNome(String clienteNome) {
+        this.clienteNome = clienteNome;
+    }
+
+    public Integer getQuartoNumero() {
+        return quartoNumero;
+    }
+
+    public void setQuartoNumero(Integer quartoNumero) {
+        this.quartoNumero = quartoNumero;
+    }
 
     public Long getClienteId() {
         return clienteId;

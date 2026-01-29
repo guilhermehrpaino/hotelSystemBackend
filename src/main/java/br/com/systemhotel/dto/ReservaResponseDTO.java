@@ -20,7 +20,12 @@ public record ReservaResponseDTO(
 
         BigDecimal valorTotal,
 
-        String observacoes
+        String observacoes,
+
+        String clienteNome,
+
+        Integer quartoNumero
+
 ){
     public ReservaResponseDTO(Reserva reserva) {
         this(reserva.getId(),
@@ -30,7 +35,9 @@ public record ReservaResponseDTO(
              reserva.getCheckOut(),
              reserva.getNumeroHospedes(),
              reserva.getValorTotal(),
-             reserva.getObservacoes()
+             reserva.getObservacoes(),
+             reserva.getClienteNome(),
+             reserva.getQuartoNumero()
         );
     }
 }
