@@ -57,7 +57,7 @@ hotelSystemCompleto/
 
 ---
 
-## 🧠 Endpoints Principais
+## Endpoints Principais
 
 ### Clientes
 
