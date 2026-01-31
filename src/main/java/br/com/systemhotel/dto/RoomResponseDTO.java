@@ -10,7 +10,8 @@ public record RoomResponseDTO(
         Integer diaria,
         Room.StatusQuarto status,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        String observacoes
 ) {
 
     public RoomResponseDTO(Room room) {
@@ -21,7 +22,8 @@ public record RoomResponseDTO(
                 room.getDiaria(),
                 room.getStatus(),
                 room.getCreatedAt(),
-                room.getUpdatedAt()
+                room.getUpdatedAt(),
+                room.getObservacoes()
     );
     }
 }

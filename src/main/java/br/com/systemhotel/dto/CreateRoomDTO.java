@@ -13,5 +13,7 @@ public record CreateRoomDTO(
 
         Room.StatusQuarto status,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+
+        String observacoes
 ) {}

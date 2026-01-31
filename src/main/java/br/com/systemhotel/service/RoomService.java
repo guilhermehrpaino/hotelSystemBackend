@@ -61,4 +61,7 @@ public class RoomService {
                 .orElseThrow(() -> new RuntimeException("Quarto não encontrado"));
     }
 
+    public void deleteById(Long id) {
+        roomRepository.deleteById(id);
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -60,6 +61,20 @@ public class AdminCustomerController {
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
+
+        try {
+            if (!service.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro Interno do Servidor");
+        }
     }
 
 

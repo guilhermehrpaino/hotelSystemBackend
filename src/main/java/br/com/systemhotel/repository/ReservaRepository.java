@@ -23,7 +23,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     List<Reserva> buscarReservaAtivaHoje(Long quartoId, LocalDate hoje, String status);
 
 
-    Reserva findByClienteId(Long clienteID);
+    List<Reserva> findByClienteId(Long clienteID);
 
     Reserva findByQuartoId(Long id);
 }

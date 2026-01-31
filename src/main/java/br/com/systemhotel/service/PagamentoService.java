@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PagamentoService {
 
@@ -22,5 +24,9 @@ public class PagamentoService {
          Pagamento pagamento = new Pagamento(create);
          pagamentoRepository.save(pagamento);
          return new PagamentoResponseDTO(pagamento);
+    }
+
+    public List<Pagamento> findAll() {
+        return pagamentoRepository.findAll();
     }
 }
