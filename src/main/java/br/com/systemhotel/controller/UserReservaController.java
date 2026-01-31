@@ -9,6 +9,7 @@ import br.com.systemhotel.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,5 +96,19 @@ public class UserReservaController {
         boolean reservaAtiva = reservaService.clienteComReserva(clienteId);
         response.put("temReserva", reservaAtiva);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteReserva(@PathVariable Long id) {
+
+        try {
+            if (!reservaService.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            reservaService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro Interno do Servidor");
+        }
     }
 }

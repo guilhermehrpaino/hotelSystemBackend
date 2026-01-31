@@ -30,6 +30,9 @@ public class Room {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(nullable = true)
+    private String observacoes;
+
 
     public Room(CreateRoomDTO dados) {
         this.numero = dados.numero();
@@ -40,6 +43,14 @@ public class Room {
 
     public Room() {}
 
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

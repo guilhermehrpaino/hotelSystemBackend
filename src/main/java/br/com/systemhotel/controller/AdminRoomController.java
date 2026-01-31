@@ -2,20 +2,16 @@ package br.com.systemhotel.controller;
 
 import br.com.systemhotel.dto.CreateRoomDTO;
 import br.com.systemhotel.dto.RoomResponseDTO;
-import br.com.systemhotel.entity.Reserva;
 import br.com.systemhotel.entity.Room;
-import br.com.systemhotel.service.ReservaService;
 import br.com.systemhotel.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/quartos")
@@ -81,6 +77,7 @@ public class AdminRoomController {
             @PathVariable Long id,
             @RequestBody Map<String, Room.StatusQuarto> requestBody
     ) {
+
         Room.StatusQuarto novoStatus = requestBody.get("status");
         Room room = roomService.findById(id);
         room.setId(id);
@@ -89,7 +86,19 @@ public class AdminRoomController {
         return ResponseEntity.ok(room);
     }
 
+    @PutMapping("/{id}/observacao")
+    public ResponseEntity<Room> updateObservacao(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> requestBody
+    ) {
 
+        String novaObservacao = requestBody.get("observacoes");
+        Room room = roomService.findById(id);
+        room.setId(id);
+        room.setObservacoes(novaObservacao);
+        room = roomService.updateRoom(room);
+        return ResponseEntity.ok(room);
+    }
 
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id, @Valid @RequestBody Room room) {
@@ -103,6 +112,20 @@ public class AdminRoomController {
             return ResponseEntity.ok(updatedStatus);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteReserva(@PathVariable Long id) {
+
+        try {
+            if (!roomService.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            roomService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro Interno do Servidor");
         }
     }
 

@@ -57,4 +57,8 @@ public class EmployeeService {
         List<Employee> employees = funcionarioRepository.findByCargo(cargo);
         return ResponseEntity.ok(employees);
     }
+
+    public void deleteById(Long id) {
+        funcionarioRepository.deleteById(id);
+    }
 }

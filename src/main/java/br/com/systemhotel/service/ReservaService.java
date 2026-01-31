@@ -3,11 +3,8 @@ package br.com.systemhotel.service;
 
 import br.com.systemhotel.dto.CreateReservaDTO;
 import br.com.systemhotel.dto.ReservaResponseDTO;
-import br.com.systemhotel.entity.Customer;
 import br.com.systemhotel.entity.Reserva;
 import br.com.systemhotel.entity.Room;
-import br.com.systemhotel.exception.ConflictException;
-import br.com.systemhotel.repository.CustomerRepository;
 import br.com.systemhotel.repository.ReservaRepository;
 import br.com.systemhotel.repository.RoomRepository;
 import jakarta.validation.Valid;
@@ -40,16 +37,16 @@ public class ReservaService {
 
     public boolean clienteComReserva(Long clienteID) {
         boolean clienteComReservaAtiva;
-        Reserva reserva = reservaRepository.findByClienteId(clienteID);
-        if (reserva == null) {
-            return clienteComReservaAtiva = false;
-        }
-        if (reserva.getStatus().equals("ATIVA") || reserva.getStatus().equals("RESERVADA")) {
-            return clienteComReservaAtiva = true;
+        List<Reserva> reservaLista = reservaRepository.findByClienteId(clienteID);
+            for (Reserva reserva : reservaLista) {
+                if (reserva.getStatus().equals("ATIVA") || reserva.getStatus().equals("RESERVADA")) {
+                    return clienteComReservaAtiva = true;
 
-        } else {
+                } else {
+                    return clienteComReservaAtiva = false;
+                }
+            }
             return clienteComReservaAtiva = false;
-        }
     }
 
     public ReservaResponseDTO createReserva(@Valid CreateReservaDTO dto) {
@@ -78,5 +75,13 @@ public class ReservaService {
 
     public Reserva findByQuartoId(Long id) {
         return reservaRepository.findByQuartoId(id);
+    }
+
+    public void deleteById(Long id) {
+        reservaRepository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return reservaRepository.existsById(id);
     }
 }
